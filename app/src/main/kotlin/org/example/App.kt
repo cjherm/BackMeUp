@@ -3,13 +3,8 @@
  */
 package org.example
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
+class App
 
-fun main() {
-    println(App().greeting)
+fun main(args: Array<String>) {
+    BackMeUpApplication().start(args)
 }
