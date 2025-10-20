@@ -1,7 +1,5 @@
 package org.example
 
-import org.example.BackMeUpProcess.BackMeUpTopArgument
-
 class BackMeUpApplication {
 
     fun start(args: Array<String>): BackMeUpResult {
