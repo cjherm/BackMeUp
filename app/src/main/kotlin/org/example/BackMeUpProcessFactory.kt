@@ -1,5 +1,7 @@
 package org.example
 
+import java.io.File
+
 class BackMeUpProcessFactory(val rawArgs: Array<String>) {
 
     fun createProcess(): BackMeUpProcess? {
@@ -38,6 +40,29 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
         return argValues
     }
 
+    private fun checkIfValuesAreValidDirectories(valuesList: List<String>, shouldBeEmpty: Boolean): Boolean {
+        valuesList.forEach { value ->
+
+            if (value.isEmpty()) {
+                return false
+            }
+
+            val dirToCheck = File(value)
+
+            // TODO Adapt use case: Should create dir if not existing?
+            if (!dirToCheck.exists() || !dirToCheck.isDirectory) {
+                return false
+            }
+
+            val isEmpty = dirToCheck.listFiles()?.isEmpty() ?: true
+
+            if (isEmpty != shouldBeEmpty) {
+                return false
+            }
+        }
+        return true
+    }
+
     private fun checkInitArgsAndCreateProcess(givenArgs: List<String>): BackMeUpProcess? {
         val saveValuesList = retrieveArgValuesFromArgs(argOf(ARG_SAVE), givenArgs)
 
@@ -46,10 +71,20 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
             return null
         }
 
+        if (!checkIfValuesAreValidDirectories(saveValuesList, false)) {
+            println("Values for \"-save\" are not valid and/or empty directories!\n\t$saveValuesList")
+            return null
+        }
+
         val storageValuesList = retrieveArgValuesFromArgs(argOf(ARG_STORAGE), givenArgs)
 
         if (storageValuesList.isEmpty()) {
             println("No values for \"-storage\" found in $givenArgs!")
+            return null
+        }
+
+        if (!checkIfValuesAreValidDirectories(storageValuesList, true)) {
+            println("Values for \"-storage\" are not valid and/or non-empty directories!\n\t$storageValuesList")
             return null
         }
 
@@ -69,11 +104,19 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
             return null
         }
 
+        if (!checkIfValuesAreValidDirectories(srcValuesList, false)) {
+            println("Values for \"-src\" are not valid and/or empty directories!\n\t$srcValuesList")
+            return null
+        }
+
         val storageValuesList = retrieveArgValuesFromArgs(argOf(ARG_STORAGE), givenArgs)
 
-        if (storageValuesList.isEmpty()) {
-            // TODO Adapt this output
-            println("No values for \"-storage\" found in $givenArgs! Will use this storage: \"\"")
+        // Explicit storage paths are not necessary
+        if (storageValuesList.isNotEmpty()) {
+            if (!checkIfValuesAreValidDirectories(storageValuesList, true)) {
+                println("Values for \"-storage\" are not valid and/or non-empty directories!\n\t$storageValuesList")
+                return null
+            }
         }
 
         return BackMeUpDifferentiator(DiffProcessConfig())
@@ -92,10 +135,20 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
             return null
         }
 
+        if (!checkIfValuesAreValidDirectories(fromValuesList, false)) {
+            println("Values for \"-from\" are not valid and/or empty directories!\n\t$fromValuesList")
+            return null
+        }
+
         val toValuesList = retrieveArgValuesFromArgs(argOf(ARG_TO), givenArgs)
 
         if (toValuesList.isEmpty()) {
             println("No values for \"-to\" found in $givenArgs!")
+            return null
+        }
+
+        if (!checkIfValuesAreValidDirectories(toValuesList, true)) {
+            println("Values for \"-to\" are not valid and/or non-empty directories!\n\t$toValuesList")
             return null
         }
 
