@@ -7,15 +7,12 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
     fun createProcess(): BackMeUpProcess? {
 
         if (containsNoOrMoreThanOneTopArg(rawArgs.toList())) {
-            println("Must contain exact ONE of these top arguments:\n\t-init\n\t-diff\n\t-restore!")
+            println("Must contain exact ONE of these top arguments:\n\t$ARG_INIT\n\t$ARG_DIFF\n\t$ARG_RESTORE!")
             return null
         }
 
-        val topArg = rawArgs.firstOrNull { it.startsWith(ARG_MARKER) }
-            ?.removePrefix(ARG_MARKER)
-
-        val remainingArgs = rawArgs.toMutableList()
-        remainingArgs.remove(ARG_MARKER + topArg)  // removes the first occurrence if it exists
+        val topArg = rawArgs.first { it in TOP_ARGS }
+        val remainingArgs = rawArgs.filter { it != topArg }
 
         return when (topArg) {
             ARG_INIT -> checkInitArgsAndCreateProcess(remainingArgs)
@@ -64,93 +61,99 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
     }
 
     private fun checkInitArgsAndCreateProcess(givenArgs: List<String>): BackMeUpProcess? {
-        val saveValuesList = retrieveArgValuesFromArgs(argOf(ARG_SAVE), givenArgs)
+        val saveValuesList = retrieveArgValuesFromArgs(ARG_SAVE, givenArgs)
 
         if (saveValuesList.isEmpty()) {
-            println("No values for \"-save\" found in $givenArgs!")
+            println("No values for \"$ARG_SAVE\" found in $givenArgs!")
             return null
         }
 
         if (!checkIfValuesAreValidDirectories(saveValuesList, false)) {
-            println("Values for \"-save\" are not valid and/or empty directories!\n\t$saveValuesList")
+            println("Values for \"$ARG_SAVE\" are not valid and/or empty directories!\n\t$saveValuesList")
             return null
         }
 
-        val storageValuesList = retrieveArgValuesFromArgs(argOf(ARG_STORAGE), givenArgs)
+        val storageValuesList = retrieveArgValuesFromArgs(ARG_STORAGE, givenArgs)
 
         if (storageValuesList.isEmpty()) {
-            println("No values for \"-storage\" found in $givenArgs!")
+            println("No values for \"$ARG_STORAGE\" found in $givenArgs!")
             return null
         }
 
         if (!checkIfValuesAreValidDirectories(storageValuesList, true)) {
-            println("Values for \"-storage\" are not valid and/or non-empty directories!\n\t$storageValuesList")
+            println("Values for \"$ARG_STORAGE\" are not valid and/or non-empty directories!\n\t$storageValuesList")
             return null
         }
+
+        // TODO clear duplicates
 
         return BackMeUpInitializer(InitProcessConfig())
     }
 
     private fun checkDiffArgsAndCreateProcess(givenArgs: List<String>): BackMeUpProcess? {
-        val srcValuesList = retrieveArgValuesFromArgs(argOf(ARG_SRC), givenArgs)
+        val srcValuesList = retrieveArgValuesFromArgs(ARG_SRC, givenArgs)
 
         if (srcValuesList.isEmpty()) {
-            println("No values for \"-src\" found in $givenArgs!")
+            println("No values for \"$ARG_SRC\" found in $givenArgs!")
             return null
         }
 
         if (srcValuesList.size > 1) {
-            println("More than one value found for \"-src\" in $givenArgs!")
+            println("More than one value found for \"$ARG_SRC\" in $givenArgs!")
             return null
         }
 
         if (!checkIfValuesAreValidDirectories(srcValuesList, false)) {
-            println("Values for \"-src\" are not valid and/or empty directories!\n\t$srcValuesList")
+            println("Values for \"$ARG_SRC\" are not valid and/or empty directories!\n\t$srcValuesList")
             return null
         }
 
-        val storageValuesList = retrieveArgValuesFromArgs(argOf(ARG_STORAGE), givenArgs)
+        val storageValuesList = retrieveArgValuesFromArgs(ARG_STORAGE, givenArgs)
 
         // Explicit storage paths are not necessary
         if (storageValuesList.isNotEmpty()) {
             if (!checkIfValuesAreValidDirectories(storageValuesList, true)) {
-                println("Values for \"-storage\" are not valid and/or non-empty directories!\n\t$storageValuesList")
+                println("Values for \"$ARG_STORAGE\" are not valid and/or non-empty directories!\n\t$storageValuesList")
                 return null
             }
         }
+
+        // TODO clear duplicates
 
         return BackMeUpDifferentiator(DiffProcessConfig())
     }
 
     private fun checkRestoreArgsAndCreateProcess(givenArgs: List<String>): BackMeUpProcess? {
-        val fromValuesList = retrieveArgValuesFromArgs(argOf(ARG_FROM), givenArgs)
+        val fromValuesList = retrieveArgValuesFromArgs(ARG_FROM, givenArgs)
 
         if (fromValuesList.isEmpty()) {
-            println("No values for \"-from\" found in $givenArgs!")
+            println("No values for \"$ARG_FROM\" found in $givenArgs!")
             return null
         }
 
         if (fromValuesList.size > 1) {
-            println("More than one value found for \"-from\" in $givenArgs!")
+            println("More than one value found for \"$ARG_FROM\" in $givenArgs!")
             return null
         }
 
         if (!checkIfValuesAreValidDirectories(fromValuesList, false)) {
-            println("Values for \"-from\" are not valid and/or empty directories!\n\t$fromValuesList")
+            println("Values for \"$ARG_FROM\" are not valid and/or empty directories!\n\t$fromValuesList")
             return null
         }
 
-        val toValuesList = retrieveArgValuesFromArgs(argOf(ARG_TO), givenArgs)
+        val toValuesList = retrieveArgValuesFromArgs(ARG_TO, givenArgs)
 
         if (toValuesList.isEmpty()) {
-            println("No values for \"-to\" found in $givenArgs!")
+            println("No values for \"$ARG_TO\" found in $givenArgs!")
             return null
         }
 
         if (!checkIfValuesAreValidDirectories(toValuesList, true)) {
-            println("Values for \"-to\" are not valid and/or non-empty directories!\n\t$toValuesList")
+            println("Values for \"$ARG_TO\" are not valid and/or non-empty directories!\n\t$toValuesList")
             return null
         }
+
+        // TODO clear duplicates
 
         return BackMeUpRestorer(RestoreProcessConfig())
     }
@@ -173,16 +176,27 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
     companion object {
         const val ARG_MARKER = "-"
 
-        const val ARG_INIT = "init"
-        const val ARG_DIFF = "diff"
-        const val ARG_RESTORE = "restore"
-        const val ARG_SAVE = "save"
-        const val ARG_STORAGE = "storage"
-        const val ARG_SRC = "src"
-        const val ARG_FROM = "from"
-        const val ARG_TO = "to"
+        const val INIT = "init"
+        const val SAVE = "save"
+        const val STORAGE = "storage"
 
-        val TOP_ARGS = arrayOf(argOf(ARG_INIT), argOf(ARG_DIFF), argOf(ARG_RESTORE))
+        const val DIFF = "diff"
+        const val SRC = "src"
+
+        const val RESTORE = "restore"
+        const val FROM = "from"
+        const val TO = "to"
+
+        val ARG_INIT = argOf(INIT)
+        val ARG_SAVE = argOf(SAVE)
+        val ARG_STORAGE = argOf(STORAGE)
+        val ARG_DIFF = argOf(DIFF)
+        val ARG_SRC = argOf(SRC)
+        val ARG_RESTORE = argOf(RESTORE)
+        val ARG_FROM = argOf(FROM)
+        val ARG_TO = argOf(TO)
+
+        val TOP_ARGS = arrayOf(ARG_INIT, ARG_DIFF, ARG_RESTORE)
 
         private fun argOf(arg: String): String {
             return ARG_MARKER + arg
