@@ -1,6 +1,7 @@
 package org.example.processes
 
 import org.example.BackMeUpResult
+import org.example.configs.BackMeUpProcessConfig
 import org.example.configs.RestoreProcessConfig
 
 class BackMeUpRestorer(val config: RestoreProcessConfig) : BackMeUpProcess {
@@ -9,5 +10,9 @@ class BackMeUpRestorer(val config: RestoreProcessConfig) : BackMeUpProcess {
 
     override fun start(): BackMeUpResult {
         return BackMeUpResult.ERROR
+    }
+
+    override fun getConfig(): BackMeUpProcessConfig {
+        return config
     }
 }
