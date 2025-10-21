@@ -1,15 +1,10 @@
 package org.example
 
-import java.io.File
+class BackMeUpRestorer(val config: RestoreProcessConfig) : BackMeUpProcess {
 
-class BackMeUpRestorer(val args: List<String>) : BackMeUpProcess {
+    // TODO implement this BackMeUpProcess
 
     override fun start(): BackMeUpResult {
-        val file = File(args[0])
-        return if (file.exists()) {
-            BackMeUpResult.SUCCESS
-        } else {
-            BackMeUpResult.ERROR
-        }
+        return BackMeUpResult.ERROR
     }
 }
