@@ -1,4 +1,7 @@
-package org.example
+package org.example.processes
+
+import org.example.BackMeUpResult
+import org.example.configs.RestoreProcessConfig
 
 class BackMeUpRestorer(val config: RestoreProcessConfig) : BackMeUpProcess {
 

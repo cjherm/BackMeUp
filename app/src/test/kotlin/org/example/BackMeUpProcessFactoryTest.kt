@@ -1,5 +1,9 @@
 package org.example
 
+import org.example.processes.BackMeUpDifferentiator
+import org.example.processes.BackMeUpInitializer
+import org.example.processes.BackMeUpProcessFactory
+import org.example.processes.BackMeUpRestorer
 import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertNull
 import kotlin.test.Test

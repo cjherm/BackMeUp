@@ -1,4 +1,7 @@
-package org.example
+package org.example.processes
+
+import org.example.BackMeUpResult
+import org.example.configs.DiffProcessConfig
 
 class BackMeUpDifferentiator(val config: DiffProcessConfig) : BackMeUpProcess {
 

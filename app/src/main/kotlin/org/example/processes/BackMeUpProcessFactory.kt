@@ -1,5 +1,8 @@
-package org.example
+package org.example.processes
 
+import org.example.configs.DiffProcessConfig
+import org.example.configs.InitProcessConfig
+import org.example.configs.RestoreProcessConfig
 import java.io.File
 
 class BackMeUpProcessFactory(val rawArgs: Array<String>) {

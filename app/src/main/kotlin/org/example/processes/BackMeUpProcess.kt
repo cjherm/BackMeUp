@@ -1,4 +1,4 @@
-package org.example
+package org.example.processes
 
 interface BackMeUpProcess {
 
