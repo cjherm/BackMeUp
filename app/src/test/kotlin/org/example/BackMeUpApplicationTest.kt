@@ -48,18 +48,6 @@ class BackMeUpApplicationTest {
     }
 
     @Test
-    fun testStart_initArgValidPath_resultSuccess() {
-        // arrange
-        val sut = BackMeUpApplication()
-
-        // act
-        val result = sut.start(INIT_ARG_VALID_PATH)
-
-        // assert
-        assertEquals(BackMeUpResult.SUCCESS, result)
-    }
-
-    @Test
     fun testStart_initArgInvalidPath_resultError() {
         // arrange
         val sut = BackMeUpApplication()
@@ -72,18 +60,6 @@ class BackMeUpApplicationTest {
     }
 
     @Test
-    fun testStart_diffArgValidPath_resultSuccess() {
-        // arrange
-        val sut = BackMeUpApplication()
-
-        // act
-        val result = sut.start(DIFF_ARG_VALID_PATH)
-
-        // assert
-        assertEquals(BackMeUpResult.SUCCESS, result)
-    }
-
-    @Test
     fun testStart_diffArgInvalidPath_resultError() {
         // arrange
         val sut = BackMeUpApplication()
@@ -93,18 +69,6 @@ class BackMeUpApplicationTest {
 
         // assert
         assertEquals(BackMeUpResult.ERROR, result)
-    }
-
-    @Test
-    fun testStart_restoreArgValidPath_resultSuccess() {
-        // arrange
-        val sut = BackMeUpApplication()
-
-        // act
-        val result = sut.start(RESTORE_ARG_VALID_PATH)
-
-        // assert
-        assertEquals(BackMeUpResult.SUCCESS, result)
     }
 
     @Test

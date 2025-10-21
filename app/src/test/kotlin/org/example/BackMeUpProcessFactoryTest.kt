@@ -1,7 +1,11 @@
 package org.example
 
+import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertNull
+import kotlin.io.path.absolutePathString
+import kotlin.io.path.createTempFile
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class BackMeUpProcessFactoryTest {
 
@@ -65,15 +69,40 @@ class BackMeUpProcessFactoryTest {
         assertNull(result)
     }
 
+    @Test
+    fun test_createProcess_initOneSaveOneStorage_returnsInitProcess() {
+        // arrange
+        val sut = BackMeUpProcessFactory(INIT_ARGS_ONE_SAVE_ONE_STORAGE)
+
+        // act
+        val result = sut.createProcess()
+
+        // assert
+        assertNotNull(result)
+        assertEquals(BackMeUpInitializer::class, result::class)
+    }
+
     companion object {
         const val INIT_ARG = "-init"
         const val DIFF_ARG = "-diff"
         const val RESTORE_ARG = "-restore"
+
+        const val SAVE_ARG = "-save"
+        const val STORAGE_ARG = "-storage"
+        const val FROM_ARG = "-from"
+        const val TO_ARG = "-to"
+        const val SRC_ARG = "-src"
 
         val ARGS_WITHOUT_TOP_ARG = arrayOf("abc", "def")
         val ARGS_WITH_TWO_TOP_ARGS_0 = arrayOf(INIT_ARG, DIFF_ARG)
         val ARGS_WITH_TWO_TOP_ARGS_1 = arrayOf(INIT_ARG, RESTORE_ARG)
         val ARGS_WITH_TWO_TOP_ARGS_2 = arrayOf(DIFF_ARG, RESTORE_ARG)
         val ARGS_WITH_ALL_TOP_ARG = arrayOf(INIT_ARG, DIFF_ARG, RESTORE_ARG)
+
+        val VALID_EMPTY_DIR = createTempFile("testEmptyDir").absolutePathString()
+        val VALID_NONEMPTY_DIR = createTempFile("testNonEmptyDir").absolutePathString()
+
+        val INIT_ARGS_ONE_SAVE_ONE_STORAGE =
+            arrayOf(INIT_ARG, SAVE_ARG, VALID_NONEMPTY_DIR, STORAGE_ARG, VALID_EMPTY_DIR)
     }
 }
