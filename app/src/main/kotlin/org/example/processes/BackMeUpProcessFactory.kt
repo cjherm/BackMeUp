@@ -92,7 +92,9 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
             return null
         }
 
-        return BackMeUpInitializer(InitProcessConfig())
+        val config = InitProcessConfig(saveValuesList, storageValuesList)
+
+        return BackMeUpInitializer(config)
     }
 
     private fun checkDiffArgsAndCreateProcess(givenArgs: List<String>): BackMeUpProcess? {
@@ -124,7 +126,9 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
             }
         }
 
-        return BackMeUpDifferentiator(DiffProcessConfig())
+        val config = DiffProcessConfig(srcValuesList, storageValuesList)
+
+        return BackMeUpDifferentiator(config)
     }
 
     private fun checkRestoreArgsAndCreateProcess(givenArgs: List<String>): BackMeUpProcess? {
@@ -159,7 +163,9 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
             return null
         }
 
-        return BackMeUpRestorer(RestoreProcessConfig())
+        val config = RestoreProcessConfig(fromValuesList, toValuesList)
+
+        return BackMeUpRestorer(config)
     }
 
     /*
