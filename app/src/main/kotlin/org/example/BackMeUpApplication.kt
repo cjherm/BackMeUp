@@ -26,7 +26,8 @@ class BackMeUpApplication {
     }
 
     /*
-    Arguments hierarchy:
+        Arguments hierarchy:
+
         -init       (creates first full backup)
         |___-save       (directory to be backed up)
         |___-storage    (directory to store the backup)
@@ -36,7 +37,9 @@ class BackMeUpApplication {
         -restore    (restores complete file system from a backup)
         |___-from       (last state of backup to restore from)
         |___-to         (directory in which to restore)
- */
+
+        Note: Only one top level argument per execution allowed
+     */
     companion object {
         const val ARG_MARKER = "-"
         const val ARG_INIT = "init"
