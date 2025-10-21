@@ -2,8 +2,6 @@ package org.example
 
 import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertNull
-import kotlin.io.path.absolutePathString
-import kotlin.io.path.createTempFile
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -178,9 +176,9 @@ class BackMeUpProcessFactoryTest {
         const val TO_ARG = "-to"
         const val SRC_ARG = "-src"
 
-        // TODO Replace with actual File paths
-        val VALID_EMPTY_DIR = "dummyPath"
-        val VALID_NONEMPTY_DIR = "dummyPath"
+        // TODO Replace with mechanism to auto create/remove files and directories for tests
+        const val VALID_EMPTY_DIR = "src/test/resources/emptyDir"
+        const val VALID_NONEMPTY_DIR = "src/test/resources/nonEmptyDir"
 
         val VALID_SAVE = arrayOf<String>(SAVE_ARG, VALID_NONEMPTY_DIR)
         val VALID_STORAGE = arrayOf<String>(STORAGE_ARG, VALID_EMPTY_DIR)
