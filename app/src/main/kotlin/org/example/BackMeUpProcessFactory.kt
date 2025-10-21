@@ -5,7 +5,7 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
     fun createProcess(): BackMeUpProcess? {
 
         if (containsNoOrMoreThanOneTopArg(rawArgs.toList())) {
-            println("Must contain exact ONE of these top arguments:\n\t-init\nt\t-diff\n\t-restore!")
+            println("Must contain exact ONE of these top arguments:\n\t-init\n\t-diff\n\t-restore!")
             return null
         }
 
