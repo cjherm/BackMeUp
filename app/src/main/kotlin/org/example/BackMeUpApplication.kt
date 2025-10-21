@@ -3,7 +3,7 @@ package org.example
 class BackMeUpApplication {
 
     fun start(args: Array<String>): BackMeUpResult {
-        val process = extractArgsFromArgsArray(args)
+        val process = generateProcessFromRawArgs(args)
         if (process == null) {
             println("ERROR!")
             return BackMeUpResult.ERROR
@@ -11,7 +11,7 @@ class BackMeUpApplication {
         return process.start()
     }
 
-    private fun extractArgsFromArgsArray(args: Array<String>): BackMeUpProcess? {
+    private fun generateProcessFromRawArgs(args: Array<String>): BackMeUpProcess? {
 
         val firstTopArg = args.firstOrNull { it.startsWith(ARG_MARKER) }
             ?.removePrefix(ARG_MARKER)
