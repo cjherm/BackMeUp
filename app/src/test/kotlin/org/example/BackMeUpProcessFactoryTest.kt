@@ -12,7 +12,7 @@ class BackMeUpProcessFactoryTest {
     @Test
     fun test_createProcess_noTopArg_returnsNull() {
         // arrange
-        val sut = BackMeUpProcessFactory(ARGS_WITHOUT_TOP_ARG)
+        val sut = BackMeUpProcessFactory(arrayOf("abc", "def"))
 
         // act
         val result = sut.createProcess()
@@ -24,7 +24,7 @@ class BackMeUpProcessFactoryTest {
     @Test
     fun test_createProcess_twoTopArg0_returnsNull() {
         // arrange
-        val sut = BackMeUpProcessFactory(ARGS_WITH_TWO_TOP_ARGS_0)
+        val sut = BackMeUpProcessFactory(arrayOf(INIT_ARG, DIFF_ARG))
 
         // act
         val result = sut.createProcess()
@@ -36,7 +36,7 @@ class BackMeUpProcessFactoryTest {
     @Test
     fun test_createProcess_twoTopArg1_returnsNull() {
         // arrange
-        val sut = BackMeUpProcessFactory(ARGS_WITH_TWO_TOP_ARGS_1)
+        val sut = BackMeUpProcessFactory(arrayOf(INIT_ARG, RESTORE_ARG))
 
         // act
         val result = sut.createProcess()
@@ -48,7 +48,7 @@ class BackMeUpProcessFactoryTest {
     @Test
     fun test_createProcess_twoTopArg2_returnsNull() {
         // arrange
-        val sut = BackMeUpProcessFactory(ARGS_WITH_TWO_TOP_ARGS_2)
+        val sut = BackMeUpProcessFactory(arrayOf(DIFF_ARG, RESTORE_ARG))
 
         // act
         val result = sut.createProcess()
@@ -58,9 +58,9 @@ class BackMeUpProcessFactoryTest {
     }
 
     @Test
-    fun test_createProcess_twoThreeTopArg_returnsNull() {
+    fun test_createProcess_threeTopArg_returnsNull() {
         // arrange
-        val sut = BackMeUpProcessFactory(ARGS_WITH_ALL_TOP_ARG)
+        val sut = BackMeUpProcessFactory(arrayOf(INIT_ARG, DIFF_ARG, RESTORE_ARG))
 
         // act
         val result = sut.createProcess()
@@ -72,7 +72,7 @@ class BackMeUpProcessFactoryTest {
     @Test
     fun test_createProcess_initOneSaveOneStorage_returnsInitProcess() {
         // arrange
-        val argLine = arrayOf(INIT_ARG, SAVE_ARG, VALID_NONEMPTY_DIR, STORAGE_ARG, VALID_EMPTY_DIR)
+        val argLine = makeArray(INIT_ARG, VALID_SAVE, VALID_STORAGE)
         val sut = BackMeUpProcessFactory(argLine)
 
         // act
@@ -86,15 +86,7 @@ class BackMeUpProcessFactoryTest {
     @Test
     fun test_createProcess_initOneSaveTwoStorage_returnsInitProcess() {
         // arrange
-        val argLine = arrayOf(
-            INIT_ARG,
-            SAVE_ARG,
-            VALID_NONEMPTY_DIR,
-            STORAGE_ARG,
-            VALID_EMPTY_DIR,
-            STORAGE_ARG,
-            VALID_EMPTY_DIR
-        )
+        val argLine = makeArray(INIT_ARG, VALID_STORAGE, VALID_SAVE, VALID_STORAGE)
         val sut = BackMeUpProcessFactory(argLine)
 
         // act
@@ -108,15 +100,7 @@ class BackMeUpProcessFactoryTest {
     @Test
     fun test_createProcess_initTwoSaveOneStorage_returnsInitProcess() {
         // arrange
-        val argLine = arrayOf(
-            INIT_ARG,
-            SAVE_ARG,
-            VALID_NONEMPTY_DIR,
-            SAVE_ARG,
-            VALID_NONEMPTY_DIR,
-            STORAGE_ARG,
-            VALID_EMPTY_DIR
-        )
+        val argLine = makeArray(INIT_ARG, VALID_SAVE, VALID_STORAGE, VALID_SAVE)
         val sut = BackMeUpProcessFactory(argLine)
 
         // act
@@ -130,17 +114,7 @@ class BackMeUpProcessFactoryTest {
     @Test
     fun test_createProcess_initTwoSaveTwoStorage_returnsInitProcess() {
         // arrange
-        val argLine = arrayOf(
-            INIT_ARG,
-            SAVE_ARG,
-            VALID_NONEMPTY_DIR,
-            SAVE_ARG,
-            VALID_NONEMPTY_DIR,
-            STORAGE_ARG,
-            VALID_EMPTY_DIR,
-            STORAGE_ARG,
-            VALID_EMPTY_DIR
-        )
+        val argLine = makeArray(INIT_ARG, VALID_STORAGE, VALID_SAVE, VALID_STORAGE, VALID_SAVE)
         val sut = BackMeUpProcessFactory(argLine)
 
         // act
@@ -154,7 +128,8 @@ class BackMeUpProcessFactoryTest {
     @Test
     fun test_createProcess_diffOneSrcNoneStorage_returnsDiffProcess() {
         // arrange
-        val sut = BackMeUpProcessFactory(DIFF_ARGS_ONE_SRC_NONE_STORAGE)
+        val argLine = makeArray(DIFF_ARG, VALID_SRC)
+        val sut = BackMeUpProcessFactory(argLine)
 
         // act
         val result = sut.createProcess()
@@ -167,7 +142,8 @@ class BackMeUpProcessFactoryTest {
     @Test
     fun test_createProcess_diffOneSrcOneStorage_returnsDiffProcess() {
         // arrange
-        val sut = BackMeUpProcessFactory(DIFF_ARGS_ONE_SRC_ONE_STORAGE)
+        val argLine = makeArray(DIFF_ARG, VALID_SRC, VALID_STORAGE)
+        val sut = BackMeUpProcessFactory(argLine)
 
         // act
         val result = sut.createProcess()
@@ -180,7 +156,8 @@ class BackMeUpProcessFactoryTest {
     @Test
     fun test_createProcess_restoreOneFromOneTo_returnsRestoreProcess() {
         // arrange
-        val sut = BackMeUpProcessFactory(RESTORE_ARGS_ONE_FROM_ONE_TO)
+        val argLine = makeArray(RESTORE_ARG, VALID_FROM, VALID_TO)
+        val sut = BackMeUpProcessFactory(argLine)
 
         // act
         val result = sut.createProcess()
@@ -201,20 +178,25 @@ class BackMeUpProcessFactoryTest {
         const val TO_ARG = "-to"
         const val SRC_ARG = "-src"
 
-        val ARGS_WITHOUT_TOP_ARG = arrayOf("abc", "def")
-        val ARGS_WITH_TWO_TOP_ARGS_0 = arrayOf(INIT_ARG, DIFF_ARG)
-        val ARGS_WITH_TWO_TOP_ARGS_1 = arrayOf(INIT_ARG, RESTORE_ARG)
-        val ARGS_WITH_TWO_TOP_ARGS_2 = arrayOf(DIFF_ARG, RESTORE_ARG)
-        val ARGS_WITH_ALL_TOP_ARG = arrayOf(INIT_ARG, DIFF_ARG, RESTORE_ARG)
+        // TODO Replace with actual File paths
+        val VALID_EMPTY_DIR = "dummyPath"
+        val VALID_NONEMPTY_DIR = "dummyPath"
 
-        val VALID_EMPTY_DIR = createTempFile("testEmptyDir").absolutePathString()
-        val VALID_NONEMPTY_DIR = createTempFile("testNonEmptyDir").absolutePathString()
+        val VALID_SAVE = arrayOf<String>(SAVE_ARG, VALID_NONEMPTY_DIR)
+        val VALID_STORAGE = arrayOf<String>(STORAGE_ARG, VALID_EMPTY_DIR)
+        val VALID_FROM = arrayOf<String>(FROM_ARG, VALID_NONEMPTY_DIR)
+        val VALID_TO = arrayOf<String>(TO_ARG, VALID_EMPTY_DIR)
+        val VALID_SRC = arrayOf<String>(SRC_ARG, VALID_NONEMPTY_DIR)
 
-        val DIFF_ARGS_ONE_SRC_NONE_STORAGE =
-            arrayOf(DIFF_ARG, SRC_ARG, VALID_NONEMPTY_DIR)
-        val DIFF_ARGS_ONE_SRC_ONE_STORAGE =
-            arrayOf(DIFF_ARG, SRC_ARG, VALID_NONEMPTY_DIR, STORAGE_ARG, VALID_EMPTY_DIR)
-        val RESTORE_ARGS_ONE_FROM_ONE_TO =
-            arrayOf(RESTORE_ARG, FROM_ARG, VALID_NONEMPTY_DIR, TO_ARG, VALID_EMPTY_DIR)
+        private fun makeArray(vararg items: Any): Array<String> {
+            val result = mutableListOf<String>()
+            for (item in items) {
+                when (item) {
+                    is String -> result.add(item)
+                    is Array<*> -> result.addAll(item.filterIsInstance<String>())
+                }
+            }
+            return result.toTypedArray()
+        }
     }
 }
