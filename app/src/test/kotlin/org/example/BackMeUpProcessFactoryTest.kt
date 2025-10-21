@@ -72,7 +72,76 @@ class BackMeUpProcessFactoryTest {
     @Test
     fun test_createProcess_initOneSaveOneStorage_returnsInitProcess() {
         // arrange
-        val sut = BackMeUpProcessFactory(INIT_ARGS_ONE_SAVE_ONE_STORAGE)
+        val argLine = arrayOf(INIT_ARG, SAVE_ARG, VALID_NONEMPTY_DIR, STORAGE_ARG, VALID_EMPTY_DIR)
+        val sut = BackMeUpProcessFactory(argLine)
+
+        // act
+        val result = sut.createProcess()
+
+        // assert
+        assertNotNull(result)
+        assertEquals(BackMeUpInitializer::class, result::class)
+    }
+
+    @Test
+    fun test_createProcess_initOneSaveTwoStorage_returnsInitProcess() {
+        // arrange
+        val argLine = arrayOf(
+            INIT_ARG,
+            SAVE_ARG,
+            VALID_NONEMPTY_DIR,
+            STORAGE_ARG,
+            VALID_EMPTY_DIR,
+            STORAGE_ARG,
+            VALID_EMPTY_DIR
+        )
+        val sut = BackMeUpProcessFactory(argLine)
+
+        // act
+        val result = sut.createProcess()
+
+        // assert
+        assertNotNull(result)
+        assertEquals(BackMeUpInitializer::class, result::class)
+    }
+
+    @Test
+    fun test_createProcess_initTwoSaveOneStorage_returnsInitProcess() {
+        // arrange
+        val argLine = arrayOf(
+            INIT_ARG,
+            SAVE_ARG,
+            VALID_NONEMPTY_DIR,
+            SAVE_ARG,
+            VALID_NONEMPTY_DIR,
+            STORAGE_ARG,
+            VALID_EMPTY_DIR
+        )
+        val sut = BackMeUpProcessFactory(argLine)
+
+        // act
+        val result = sut.createProcess()
+
+        // assert
+        assertNotNull(result)
+        assertEquals(BackMeUpInitializer::class, result::class)
+    }
+
+    @Test
+    fun test_createProcess_initTwoSaveTwoStorage_returnsInitProcess() {
+        // arrange
+        val argLine = arrayOf(
+            INIT_ARG,
+            SAVE_ARG,
+            VALID_NONEMPTY_DIR,
+            SAVE_ARG,
+            VALID_NONEMPTY_DIR,
+            STORAGE_ARG,
+            VALID_EMPTY_DIR,
+            STORAGE_ARG,
+            VALID_EMPTY_DIR
+        )
+        val sut = BackMeUpProcessFactory(argLine)
 
         // act
         val result = sut.createProcess()
@@ -141,8 +210,6 @@ class BackMeUpProcessFactoryTest {
         val VALID_EMPTY_DIR = createTempFile("testEmptyDir").absolutePathString()
         val VALID_NONEMPTY_DIR = createTempFile("testNonEmptyDir").absolutePathString()
 
-        val INIT_ARGS_ONE_SAVE_ONE_STORAGE =
-            arrayOf(INIT_ARG, SAVE_ARG, VALID_NONEMPTY_DIR, STORAGE_ARG, VALID_EMPTY_DIR)
         val DIFF_ARGS_ONE_SRC_NONE_STORAGE =
             arrayOf(DIFF_ARG, SRC_ARG, VALID_NONEMPTY_DIR)
         val DIFF_ARGS_ONE_SRC_ONE_STORAGE =
