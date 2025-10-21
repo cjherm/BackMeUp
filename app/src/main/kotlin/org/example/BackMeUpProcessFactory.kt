@@ -1,31 +1,56 @@
 package org.example
 
-class BackMeUpProcessFactory(val args: Array<String>) {
+class BackMeUpProcessFactory(val rawArgs: Array<String>) {
 
     fun createProcess(): BackMeUpProcess? {
 
-        if (containsNoOrMoreThanOneTopArgument(args)) {
+        if (containsNoOrMoreThanOne(rawArgs.toList(), TOP_ARGS)) {
             println("Must contain exact one of these top arguments:\n\t-init\nt\t-diff\n\t-restore!")
             return null
         }
 
-        val topArg = args.firstOrNull { it.startsWith(ARG_MARKER) }
+        val topArg = rawArgs.firstOrNull { it.startsWith(ARG_MARKER) }
             ?.removePrefix(ARG_MARKER)
 
-        val remainingArgs = args.toMutableList()
+        val remainingArgs = rawArgs.toMutableList()
         remainingArgs.remove(ARG_MARKER + topArg)  // removes the first occurrence if it exists
 
         return when (topArg) {
-            ARG_INIT -> BackMeUpInitializer(remainingArgs)
-            ARG_DIFF -> BackMeUpDifferentiator(remainingArgs)
-            ARG_RESTORE -> BackMeUpRestorer(remainingArgs)
+            ARG_INIT -> checkInitArgsAndCreateProcess(remainingArgs)
+            ARG_DIFF -> checkDiffArgsAndCreateProcess(remainingArgs)
+            ARG_RESTORE -> checkRestoreArgsAndCreateProcess(remainingArgs)
             else -> null
         }
     }
 
-    private fun containsNoOrMoreThanOneTopArgument(argsToCheck: Array<String>): Boolean {
-        val count = argsToCheck.count { it in TOP_ARGS }
+    private fun containsNoOrMoreThanOne(argsToCheck: List<String>, allowedArgs: Array<String>): Boolean {
+        val count = argsToCheck.count { it in allowedArgs }
         return count != 1
+    }
+
+    private fun containsNotAtLeastOneOfEach(argsToCheck: List<String>, mustBeArgs: Array<String>): Boolean {
+        return mustBeArgs.any { it !in argsToCheck }
+    }
+
+    private fun checkInitArgsAndCreateProcess(givenArgs: List<String>): BackMeUpProcess? {
+        if (containsNotAtLeastOneOfEach(givenArgs, INIT_ARGS)) {
+            return null
+        }
+        return BackMeUpInitializer(givenArgs.toList())
+    }
+
+    private fun checkDiffArgsAndCreateProcess(givenArgs: List<String>): BackMeUpProcess? {
+        if (containsNotAtLeastOneOfEach(givenArgs, DIFF_ARGS)) {
+            return null
+        }
+        return BackMeUpDifferentiator(givenArgs.toList())
+    }
+
+    private fun checkRestoreArgsAndCreateProcess(givenArgs: List<String>): BackMeUpProcess? {
+        if (containsNotAtLeastOneOfEach(givenArgs, RESTORE_ARGS)) {
+            return null
+        }
+        return BackMeUpRestorer(givenArgs.toList())
     }
 
     /*
