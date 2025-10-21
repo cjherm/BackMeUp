@@ -4,7 +4,7 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
 
     fun createProcess(): BackMeUpProcess? {
 
-        if (containsNoOrMoreThanOne(rawArgs.toList(), TOP_ARGS)) {
+        if (containsNoOrMoreThanOneTopArg(rawArgs.toList())) {
             println("Must contain exact one of these top arguments:\n\t-init\nt\t-diff\n\t-restore!")
             return null
         }
@@ -23,8 +23,8 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
         }
     }
 
-    private fun containsNoOrMoreThanOne(argsToCheck: List<String>, allowedArgs: Array<String>): Boolean {
-        val count = argsToCheck.count { it in allowedArgs }
+    private fun containsNoOrMoreThanOneTopArg(argsToCheck: List<String>): Boolean {
+        val count = argsToCheck.count { it in TOP_ARGS }
         return count != 1
     }
 
