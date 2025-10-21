@@ -48,37 +48,92 @@ class BackMeUpApplicationTest {
     }
 
     @Test
-    fun testStart_validArgs_resultSuccess() {
+    fun testStart_initArgValidPath_resultSuccess() {
         // arrange
         val sut = BackMeUpApplication()
 
         // act
-        val result = sut.start(VALID_PROCESS_VALID_PATH)
+        val result = sut.start(INIT_ARG_VALID_PATH)
 
         // assert
         assertEquals(BackMeUpResult.SUCCESS, result)
     }
 
     @Test
-    fun testStart_validProcessInvalidPath_resultError() {
+    fun testStart_initArgInvalidPath_resultError() {
         // arrange
         val sut = BackMeUpApplication()
 
         // act
-        val result = sut.start(VALID_PROCESS_INVALID_PATH)
+        val result = sut.start(INIT_ARG_INVALID_PATH)
+
+        // assert
+        assertEquals(BackMeUpResult.ERROR, result)
+    }
+
+    @Test
+    fun testStart_diffArgValidPath_resultSuccess() {
+        // arrange
+        val sut = BackMeUpApplication()
+
+        // act
+        val result = sut.start(DIFF_ARG_VALID_PATH)
+
+        // assert
+        assertEquals(BackMeUpResult.SUCCESS, result)
+    }
+
+    @Test
+    fun testStart_diffArgInvalidPath_resultError() {
+        // arrange
+        val sut = BackMeUpApplication()
+
+        // act
+        val result = sut.start(DIFF_ARG_INVALID_PATH)
+
+        // assert
+        assertEquals(BackMeUpResult.ERROR, result)
+    }
+
+    @Test
+    fun testStart_restoreArgValidPath_resultSuccess() {
+        // arrange
+        val sut = BackMeUpApplication()
+
+        // act
+        val result = sut.start(RESTORE_ARG_VALID_PATH)
+
+        // assert
+        assertEquals(BackMeUpResult.SUCCESS, result)
+    }
+
+    @Test
+    fun testStart_restoreArgInvalidPath_resultError() {
+        // arrange
+        val sut = BackMeUpApplication()
+
+        // act
+        val result = sut.start(RESTORE_ARG_INVALID_PATH)
 
         // assert
         assertEquals(BackMeUpResult.ERROR, result)
     }
 
     companion object {
+        const val INIT_ARG = "-init"
+        const val DIFF_ARG = "-diff"
+        const val RESTORE_ARG = "-restore"
+
         val EMPTY_ARRAY = emptyArray<String>()
         val ARRAY_OF_EMPTY_STRING = arrayOf("", "")
         val INVALID_ARGS = arrayOf("abc", "def")
         val VALID_FILE = createTempFile("testDir")
         val INVALID_FILE = File("abcdef")
-        val INIT_ARG = BackMeUpApplication.ARG_MARKER + BackMeUpApplication.ARG_INIT
-        val VALID_PROCESS_INVALID_PATH = arrayOf(INIT_ARG, INVALID_FILE.absolutePath)
-        val VALID_PROCESS_VALID_PATH = arrayOf(INIT_ARG, VALID_FILE.absolutePathString())
+        val INIT_ARG_INVALID_PATH = arrayOf(INIT_ARG, INVALID_FILE.absolutePath)
+        val INIT_ARG_VALID_PATH = arrayOf(INIT_ARG, VALID_FILE.absolutePathString())
+        val DIFF_ARG_INVALID_PATH = arrayOf(DIFF_ARG, INVALID_FILE.absolutePath)
+        val DIFF_ARG_VALID_PATH = arrayOf(DIFF_ARG, VALID_FILE.absolutePathString())
+        val RESTORE_ARG_INVALID_PATH = arrayOf(RESTORE_ARG, INVALID_FILE.absolutePath)
+        val RESTORE_ARG_VALID_PATH = arrayOf(RESTORE_ARG, VALID_FILE.absolutePathString())
     }
 }

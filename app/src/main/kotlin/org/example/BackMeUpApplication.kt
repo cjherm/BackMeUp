@@ -21,6 +21,8 @@ class BackMeUpApplication {
 
         return when (firstTopArg) {
             ARG_INIT -> BackMeUpInitializer(remainingArgs)
+            ARG_DIFF -> BackMeUpDifferentiator(remainingArgs)
+            ARG_RESTORE -> BackMeUpRestorer(remainingArgs)
             else -> null
         }
     }
