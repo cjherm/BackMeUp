@@ -40,7 +40,7 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
     }
 
     private fun checkDiffArgsAndCreateProcess(givenArgs: List<String>): BackMeUpProcess? {
-        if (containsNotAtLeastOneOfEach(givenArgs, DIFF_ARGS)) {
+        if (containsNotAtLeastOneOfEach(givenArgs, arrayOf(argOf(ARG_SRC)))) {
             return null
         }
         return BackMeUpDifferentiator(givenArgs.toList())

@@ -82,6 +82,45 @@ class BackMeUpProcessFactoryTest {
         assertEquals(BackMeUpInitializer::class, result::class)
     }
 
+    @Test
+    fun test_createProcess_diffOneSrcNoneStorage_returnsDiffProcess() {
+        // arrange
+        val sut = BackMeUpProcessFactory(DIFF_ARGS_ONE_SRC_NONE_STORAGE)
+
+        // act
+        val result = sut.createProcess()
+
+        // assert
+        assertNotNull(result)
+        assertEquals(BackMeUpDifferentiator::class, result::class)
+    }
+
+    @Test
+    fun test_createProcess_diffOneSrcOneStorage_returnsDiffProcess() {
+        // arrange
+        val sut = BackMeUpProcessFactory(DIFF_ARGS_ONE_SRC_ONE_STORAGE)
+
+        // act
+        val result = sut.createProcess()
+
+        // assert
+        assertNotNull(result)
+        assertEquals(BackMeUpDifferentiator::class, result::class)
+    }
+
+    @Test
+    fun test_createProcess_restoreOneFromOneTo_returnsRestoreProcess() {
+        // arrange
+        val sut = BackMeUpProcessFactory(RESTORE_ARGS_ONE_FROM_ONE_TO)
+
+        // act
+        val result = sut.createProcess()
+
+        // assert
+        assertNotNull(result)
+        assertEquals(BackMeUpRestorer::class, result::class)
+    }
+
     companion object {
         const val INIT_ARG = "-init"
         const val DIFF_ARG = "-diff"
@@ -104,5 +143,11 @@ class BackMeUpProcessFactoryTest {
 
         val INIT_ARGS_ONE_SAVE_ONE_STORAGE =
             arrayOf(INIT_ARG, SAVE_ARG, VALID_NONEMPTY_DIR, STORAGE_ARG, VALID_EMPTY_DIR)
+        val DIFF_ARGS_ONE_SRC_NONE_STORAGE =
+            arrayOf(DIFF_ARG, SRC_ARG, VALID_NONEMPTY_DIR)
+        val DIFF_ARGS_ONE_SRC_ONE_STORAGE =
+            arrayOf(DIFF_ARG, SRC_ARG, VALID_NONEMPTY_DIR, STORAGE_ARG, VALID_EMPTY_DIR)
+        val RESTORE_ARGS_ONE_FROM_ONE_TO =
+            arrayOf(RESTORE_ARG, FROM_ARG, VALID_NONEMPTY_DIR, TO_ARG, VALID_EMPTY_DIR)
     }
 }
