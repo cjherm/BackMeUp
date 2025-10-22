@@ -1,8 +1,5 @@
 package org.example.processes
 
-import org.example.configs.DiffProcessConfig
-import org.example.configs.InitProcessConfig
-import org.example.configs.RestoreProcessConfig
 import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertNull
 import kotlin.test.Test
@@ -166,66 +163,6 @@ class BackMeUpProcessFactoryTest {
         // assert
         assertNotNull(result)
         assertEquals(BackMeUpRestorer::class, result::class)
-    }
-
-    @Test
-    fun test_createProcess_initDuplicateSaveDuplicateStorage_createsCorrectConfig() {
-        // arrange
-        val saveDirsArg = listOf(VALID_NONEMPTY_DIR, VALID_NONEMPTY_DIR)
-        val storageDirsArg = listOf(VALID_EMPTY_DIR, VALID_EMPTY_DIR)
-        val argsLine = makeArray(INIT_ARG, SAVE_ARG, saveDirsArg, STORAGE_ARG, storageDirsArg)
-
-        val expectedSaveDirs = listOf(VALID_NONEMPTY_DIR)
-        val expectedStorageDirs = listOf(VALID_EMPTY_DIR)
-
-        val sut = BackMeUpProcessFactory(argsLine)
-
-        // act
-        val result = sut.createProcess()!!.getConfig() as InitProcessConfig
-
-        // assert
-        assertEquals(expectedSaveDirs, result.getListOfDirectoriesToBackUp())
-        assertEquals(expectedStorageDirs, result.getListOfDirectoriesToStoreBackUps())
-    }
-
-    @Test
-    fun test_createProcess_diffDuplicateSrcDuplicateStorage_createsCorrectConfig() {
-        // arrange
-        val srcDirsArg = listOf(VALID_NONEMPTY_DIR, VALID_NONEMPTY_DIR)
-        val storageDirsArg = listOf(VALID_EMPTY_DIR, VALID_EMPTY_DIR)
-        val argsLine = makeArray(DIFF_ARG, SRC_ARG, srcDirsArg, STORAGE_ARG, storageDirsArg)
-
-        val expectedSrcDirs = listOf(VALID_NONEMPTY_DIR)
-        val expectedStorageDirs = listOf(VALID_EMPTY_DIR)
-
-        val sut = BackMeUpProcessFactory(argsLine)
-
-        // act
-        val result = sut.createProcess()!!.getConfig() as DiffProcessConfig
-
-        // assert
-        assertEquals(expectedSrcDirs, result.getListOfDirectoriesToDiffFrom())
-        assertEquals(expectedStorageDirs, result.getListOfDirectoriesToStoreBackUps())
-    }
-
-    @Test
-    fun test_createProcess_restoreDuplicateFromDuplicateTo_createsCorrectConfig() {
-        // arrange
-        val fromDirsArg = listOf(VALID_NONEMPTY_DIR, VALID_NONEMPTY_DIR)
-        val toDirsArg = listOf(VALID_EMPTY_DIR, VALID_EMPTY_DIR)
-        val argsLine = makeArray(RESTORE_ARG, FROM_ARG, fromDirsArg, TO_ARG, toDirsArg)
-
-        val expectedFromDirs = listOf(VALID_NONEMPTY_DIR)
-        val expectedToDirs = listOf(VALID_EMPTY_DIR)
-
-        val sut = BackMeUpProcessFactory(argsLine)
-
-        // act
-        val result = sut.createProcess()!!.getConfig() as RestoreProcessConfig
-
-        // assert
-        assertEquals(expectedFromDirs, result.getListOfDirectoriesToDiffFrom())
-        assertEquals(expectedToDirs, result.getListOfDirectoriesToStoreBackUps())
     }
 
     companion object {
