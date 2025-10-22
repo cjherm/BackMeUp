@@ -14,6 +14,6 @@ class BackMeUpApplication {
             return BackMeUpResult.ERROR
         }
 
-        return process.start()
+        return process.prepare()
     }
 }

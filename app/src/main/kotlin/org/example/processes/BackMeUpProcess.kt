@@ -8,5 +8,5 @@ interface BackMeUpProcess {
         INIT, DIFF, RESTORE
     }
 
-    fun start(): BackMeUpResult
+    fun prepare(): BackMeUpResult
 }

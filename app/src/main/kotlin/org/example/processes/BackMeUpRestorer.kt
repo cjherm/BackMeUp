@@ -10,7 +10,7 @@ class BackMeUpRestorer(private val config: RestoreProcessConfig) : BackMeUpProce
 
     // TODO implement this BackMeUpProcess
 
-    override fun start(): BackMeUpResult {
+    override fun prepare(): BackMeUpResult {
         return BackMeUpResult.ERROR
     }
 }

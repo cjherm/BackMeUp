@@ -12,7 +12,7 @@ class BackMeUpDifferentiator(private val config: DiffProcessConfig) : BackMeUpPr
 
     // TODO implement this BackMeUpProcess
 
-    override fun start(): BackMeUpResult {
+    override fun prepare(): BackMeUpResult {
         return BackMeUpResult.ERROR
     }
 }

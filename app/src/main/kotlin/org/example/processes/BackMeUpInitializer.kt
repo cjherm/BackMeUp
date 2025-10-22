@@ -10,7 +10,7 @@ import java.io.File
  */
 class BackMeUpInitializer(private val config: InitProcessConfig) : BackMeUpProcess {
 
-    override fun start(): BackMeUpResult {
+    override fun prepare(): BackMeUpResult {
         calculateBackUpSize()
         checkAndSaveAvailableDiskSpace()
         return BackMeUpResult.ERROR
