@@ -2,6 +2,7 @@ package org.example.processes
 
 import org.example.configs.DiffProcessConfig
 import org.example.configs.InitProcessConfig
+import org.example.configs.ProcessConfigFactory
 import org.example.configs.RestoreProcessConfig
 import java.io.File
 
@@ -96,7 +97,10 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
             return null
         }
 
-        val config = InitProcessConfig(saveValuesList, storageValuesList)
+        val configFactory = ProcessConfigFactory(BackMeUpProcess.ProcessType.INIT)
+        configFactory.saveValuesList = saveValuesList
+        configFactory.storageValuesList = storageValuesList
+        val config = configFactory.createConfig() as InitProcessConfig
 
         return BackMeUpInitializer(config)
     }
@@ -130,7 +134,10 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
             }
         }
 
-        val config = DiffProcessConfig(srcValuesList, storageValuesList)
+        val configFactory = ProcessConfigFactory(BackMeUpProcess.ProcessType.DIFF)
+        configFactory.srcValuesList = srcValuesList
+        configFactory.storageValuesList = storageValuesList
+        val config = configFactory.createConfig() as DiffProcessConfig
 
         return BackMeUpDifferentiator(config)
     }
@@ -167,7 +174,10 @@ class BackMeUpProcessFactory(val rawArgs: Array<String>) {
             return null
         }
 
-        val config = RestoreProcessConfig(fromValuesList, toValuesList)
+        val configFactory = ProcessConfigFactory(BackMeUpProcess.ProcessType.RESTORE)
+        configFactory.fromValuesList = fromValuesList
+        configFactory.toValuesList = toValuesList
+        val config = configFactory.createConfig() as RestoreProcessConfig
 
         return BackMeUpRestorer(config)
     }
