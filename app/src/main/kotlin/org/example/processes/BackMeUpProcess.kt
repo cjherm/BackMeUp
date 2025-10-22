@@ -5,7 +5,10 @@ import org.example.configs.BackMeUpProcessConfig
 
 interface BackMeUpProcess {
 
-    fun start(): BackMeUpResult
+    enum class ProcessType {
+        INIT, DIFF, RESTORE
+    }
 
+    fun start(): BackMeUpResult
     fun getConfig(): BackMeUpProcessConfig
 }
