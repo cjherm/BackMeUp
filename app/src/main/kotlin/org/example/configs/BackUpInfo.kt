@@ -17,5 +17,8 @@ data class BackUpInfo(
     val backUpIntervals: String,
 
     // List of all directories to back up
-    val dirsToSave: List<String>
+    val dirsToSave: List<String>,
+
+    // To make sure this file was not modified manually
+    val checkSum: String
 )
