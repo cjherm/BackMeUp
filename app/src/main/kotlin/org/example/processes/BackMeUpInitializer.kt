@@ -16,6 +16,10 @@ class BackMeUpInitializer(private val config: InitProcessConfig) : BackMeUpProce
         return BackMeUpResult.ERROR
     }
 
+    override fun start(): BackMeUpResult {
+        return BackMeUpResult.ERROR
+    }
+
     private fun calculateBackUpSize() {
         config.getListOfDirectoriesToBackUp().forEach { path ->
             countFilesAndSize(path)

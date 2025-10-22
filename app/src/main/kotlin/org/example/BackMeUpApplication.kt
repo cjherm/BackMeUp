@@ -14,6 +14,12 @@ class BackMeUpApplication {
             return BackMeUpResult.ERROR
         }
 
-        return process.prepare()
+        val result = process.prepare()
+
+        return if (result == BackMeUpResult.SUCCESS) {
+            process.start()
+        } else {
+            result
+        }
     }
 }

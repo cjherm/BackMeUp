@@ -8,5 +8,9 @@ interface BackMeUpProcess {
         INIT, DIFF, RESTORE
     }
 
+    /**
+     * Prepares the process for the actual execution. Provides the possibility to check before the execution.
+     */
     fun prepare(): BackMeUpResult
+    fun start(): BackMeUpResult
 }
