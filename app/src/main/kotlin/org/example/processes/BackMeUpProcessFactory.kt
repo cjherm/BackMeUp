@@ -7,6 +7,10 @@ import java.io.File
 
 class BackMeUpProcessFactory(val rawArgs: Array<String>) {
 
+    /**
+     * Checks the given raw arguments and decides what process to create and return.
+     * If the raw args are faulty, it will return null.
+     */
     fun createProcess(): BackMeUpProcess? {
 
         if (containsNoOrMoreThanOneTopArg(rawArgs.toList())) {
